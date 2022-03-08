@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="style.css">
 
     <title>AlanyaUA!</title>
-    </style>
 
+    <script src="moment-with-locales.js"></script>
 </head>
 
 <body>
@@ -28,12 +28,12 @@
                 <span class="header">Вкажіть дату, коли ви прибули до Туреччини та зареєстрували телефон в мережі турецького мобільного оператора </span>
             </div>
             <div class="col-12">
-                <input type="date">
+                <input id="datePicker" type="date" onchange="dateChanged(this.value)">
             </div>
         </div>
         <div class="row">
             <div class="col-md-8">
-                <span class="main-text">Останній день дозволеного терміну — <b>25 травня 2022 року</b>.<br/> До цієї дати потрібно оформити дозвіл на подальше перебування у Туреччині.</span>
+                <span class="main-text">Останній день дозволеного терміну — <b id="exitDate">25 травня 2022 року</b>.<br/> До цієї дати потрібно оформити дозвіл на подальше перебування у Туреччині.</span>
             </div>
             <div class="col-md-4">
                 <span class="small-text">Методика розрахунку→ 90 днів з дати в‘їзду.Зверніть увагу, що не враховуються усі дні вашого попреденього перебування у Туреччині за останні 180 діб.</span>
@@ -41,7 +41,7 @@
         </div>
         <div class="row">
             <div class="col-md-8">
-                <span class="main-text">Останній день працездатності телефону — <b>18 липня 2022 року</b>. <br/> До цієї дати потрібно зареєструвати ваш телефон або придбати новий у турецькому магазині.</span>
+                <span class="main-text">Останній день працездатності телефону — <b id="phoneDate">18 липня 2022 року</b>. <br/> До цієї дати потрібно зареєструвати ваш телефон або придбати новий у турецькому магазині.</span>
             </div>
             <div class="col-md-4">
                 <span class="small-text">Методика розрахунку→ 120 днів з дати реєстрації IMEI телефону у турецький мережі.Зверніть увагу, що блокується IMEI, прив‘язаний до певного слоту sim-картки. Якщо у вас в телефоні дві sim-картки, то можна переставити sim-картку в інший слот та отримати ще 120 днів.</span>
@@ -74,6 +74,24 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // self executing function here
+        (function() {
+            dateChanged();
+        })();
+
+        function dateChanged(value) {
+            if (!value) {
+                value = moment();
+            } else {
+                value = moment(value);
+            }
+            document.getElementById('datePicker').value = value.format('yyyy-MM-DD');
+            document.getElementById('exitDate').innerHTML = value.add(90, 'days').locale("uk").format('LL');
+            document.getElementById('phoneDate').innerHTML = value.add(30, 'days').locale("uk").format('LL');
+        }
+    </script>
 </body>
 
 </html>
