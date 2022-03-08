@@ -57,7 +57,7 @@
                 <span class="header">Вкажіть дату, з якої потрібно порахувати</span>
             </div>
             <div class="col-12">
-                <input type="date">
+                <input id='customDatePicker' type="date" onchange="customDateChanged(this.value)">
             </div>
         </div>
         <div class="row">
@@ -65,12 +65,12 @@
                 <span class="header">Вкажіть кількість днів </span>
             </div>
             <div class="col-12">
-                <input type="number">
+                <input id='daysInput' type="number" value="0" onchange="addDaysChanged(this.value)">
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <span class="main-text">Визначена дата — <b>25 травня 2022 року<b>.</span>
+                <span class="main-text">Визначена дата — <b id="customeDate">25 травня 2022 року<b>.</span>
             </div>
         </div>
     </div>
@@ -79,6 +79,7 @@
         // self executing function here
         (function() {
             dateChanged();
+            customDateChanged();
         })();
 
         function dateChanged(value) {
@@ -90,6 +91,23 @@
             document.getElementById('datePicker').value = value.format('yyyy-MM-DD');
             document.getElementById('exitDate').innerHTML = value.add(90, 'days').locale("uk").format('LL');
             document.getElementById('phoneDate').innerHTML = value.add(30, 'days').locale("uk").format('LL');
+        }
+
+        function customDateChanged(value) {
+            if (!value) {
+                value = moment();
+            } else {
+                value = moment(value);
+            }
+            document.getElementById('customDatePicker').value = value.format('yyyy-MM-DD');
+            var addDaysValue = document.getElementById('daysInput').value;
+            document.getElementById('customeDate').innerHTML = value.add(addDaysValue, 'days').locale("uk").format('LL');
+        }
+
+        function addDaysChanged(value) {
+            var customDateValue = document.getElementById('customDatePicker').value;
+            var customeDate = moment(customDateValue).add(value, 'days').locale("uk").format('LL');
+            document.getElementById('customeDate').innerHTML = customeDate;
         }
     </script>
 </body>
